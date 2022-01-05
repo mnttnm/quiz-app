@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:quiz_app/src/categories/categories_handler.dart';
+import 'package:quiz_app/src/questions/question_view.dart';
 
+import 'categories/category_list_view.dart';
 import 'sample_feature/sample_item_details_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
-/// The Widget that configures your application.
 class QuizApp extends StatelessWidget {
   const QuizApp({
     Key? key,
     required this.settingsController,
+    required this.categoriesHandler,
   }) : super(key: key);
 
   final SettingsController settingsController;
-
+  final CategoriesHandler categoriesHandler;
   @override
   Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.
@@ -60,6 +62,8 @@ class QuizApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
+          debugShowCheckedModeBanner: false,
+
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.
           onGenerateRoute: (RouteSettings routeSettings) {
@@ -69,11 +73,13 @@ class QuizApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
-                  case SampleItemListView.routeName:
+                  case QuestionView.routeName:
+                    return const QuestionView();
+                  case CategoryListView.routeName:
                   default:
-                    return const SampleItemListView();
+                    return CategoryListView(
+                      categoriesHandler: categoriesHandler,
+                    );
                 }
               },
             );
