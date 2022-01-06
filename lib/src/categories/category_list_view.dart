@@ -64,9 +64,8 @@ class CategoryListView extends StatelessWidget {
                           ),
                           onTap: () {
                             Navigator.restorablePushNamed(
-                              context,
-                              QuestionView.routeName,
-                            );
+                                context, Questionsview.routeName,
+                                arguments: {"category": categoryItem.value});
                           });
                     },
                   );

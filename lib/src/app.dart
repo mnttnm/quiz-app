@@ -5,7 +5,6 @@ import 'package:quiz_app/src/categories/categories_handler.dart';
 import 'package:quiz_app/src/questions/question_view.dart';
 
 import 'categories/category_list_view.dart';
-import 'sample_feature/sample_item_details_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -73,8 +72,11 @@ class QuizApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case QuestionView.routeName:
-                    return const QuestionView();
+                  case Questionsview.routeName:
+                    final args = routeSettings.arguments as Map<String, String>;
+                    return Questionsview(
+                      questionsCategory: args['category']!,
+                    );
                   case CategoryListView.routeName:
                   default:
                     return CategoryListView(
