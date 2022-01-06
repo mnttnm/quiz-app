@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/src/api/models/question.dart';
 import 'package:quiz_app/src/api/quiz_api_client.dart';
+import 'package:quiz_app/src/result/result.dart';
+import 'package:quiz_app/src/result/result_view.dart';
 
 enum QuestionsFetchStatus { initial, loading, success, failure }
 
@@ -101,6 +103,12 @@ class _QuestionsviewState extends State<Questionsview> {
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
+                              Navigator.pushNamed(context, ResultView.routeName,
+                                  arguments: Result(
+                                    unAnsweredCount: unAnsweredCount,
+                                    correctAnswerCount: correctAnswerCount,
+                                    inCorrectAnswerCount: inCorrectAnswerCount,
+                                  ));
                             },
                             child: const Text("Yes"),
                           ),
@@ -114,7 +122,14 @@ class _QuestionsviewState extends State<Questionsview> {
                       );
                     },
                   );
-                } else {}
+                } else {
+                  Navigator.pushNamed(context, ResultView.routeName,
+                      arguments: Result(
+                        unAnsweredCount: unAnsweredCount,
+                        correctAnswerCount: correctAnswerCount,
+                        inCorrectAnswerCount: inCorrectAnswerCount,
+                      ));
+                }
               },
               child: const Text(
                 "Submit",
@@ -141,19 +156,22 @@ class _QuestionsviewState extends State<Questionsview> {
                 ),
               )
             : fetchStatus == QuestionsFetchStatus.success
-                ? ListView(
-                    addAutomaticKeepAlives: true,
-                    // Providing a restorationId allows the ListView to restore the
-                    // scroll position when a user leaves and returns to the app after it
-                    // has been killed while running in the background.
-                    restorationId: 'CategoryListView',
-                    // itemCount: questions.length,
-                    children: questions.map((question) {
-                      return QuestionBox(
-                        question: question,
-                        onQuestionAnswer: onQuestionStatusUpdate,
-                      );
-                    }).toList(),
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView(
+                      addAutomaticKeepAlives: true,
+                      // Providing a restorationId allows the ListView to restore the
+                      // scroll position when a user leaves and returns to the app after it
+                      // has been killed while running in the background.
+                      restorationId: 'CategoryListView',
+                      // itemCount: questions.length,
+                      children: questions.map((question) {
+                        return QuestionBox(
+                          question: question,
+                          onQuestionAnswer: onQuestionStatusUpdate,
+                        );
+                      }).toList(),
+                    ),
                   )
                 : const Center(
                     child: Text("Error while fetching the data"),
@@ -184,6 +202,7 @@ class _QuestionBoxState extends State<QuestionBox>
     final widgetList = <ListTile>[];
     for (var i in [for (var i = 0; i < 3; i += 1) i]) {
       widgetList.add(ListTile(
+        contentPadding: EdgeInsets.zero,
         leading: Radio(
             value: i,
             groupValue: _currentAnswer,
@@ -201,9 +220,12 @@ class _QuestionBoxState extends State<QuestionBox>
                       : QuestionStatus.wrong,
                   question.id);
             }),
-        title: Text(i == correctAnswerIndex
-            ? question.correctAnswer
-            : question.incorrectAnswers[i]),
+        title: Text(
+          i == correctAnswerIndex
+              ? question.correctAnswer
+              : question.incorrectAnswers[i],
+          style: const TextStyle(fontSize: 14),
+        ),
       ));
     }
     return widgetList;
@@ -215,10 +237,16 @@ class _QuestionBoxState extends State<QuestionBox>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(widget.question.question),
+          Text(
+            widget.question.question,
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: Colors.blue.shade900, fontSize: 18),
+          ),
           const SizedBox(
             height: 8,
           ),

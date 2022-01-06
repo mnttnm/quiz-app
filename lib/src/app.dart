@@ -3,6 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quiz_app/src/categories/categories_handler.dart';
 import 'package:quiz_app/src/questions/question_view.dart';
+import 'package:quiz_app/src/result/result.dart';
+import 'package:quiz_app/src/result/result_view.dart';
 
 import 'categories/category_list_view.dart';
 import 'settings/settings_controller.dart';
@@ -76,6 +78,10 @@ class QuizApp extends StatelessWidget {
                     final args = routeSettings.arguments as Map<String, String>;
                     return Questionsview(
                       questionsCategory: args['category']!,
+                    );
+                  case ResultView.routeName:
+                    return ResultView(
+                      resultObj: routeSettings.arguments as Result,
                     );
                   case CategoryListView.routeName:
                   default:
