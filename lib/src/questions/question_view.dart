@@ -85,8 +85,6 @@ class _QuestionsviewState extends State<Questionsview> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-              'C:$correctAnswerCount I:$inCorrectAnswerCount U:$unAnsweredCount'),
           actions: [
             TextButton(
               onPressed: () {
