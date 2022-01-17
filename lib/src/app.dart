@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:quiz_app/src/categories/categories_handler.dart';
-import 'package:quiz_app/src/questions/question_view.dart';
-import 'package:quiz_app/src/result/result.dart';
-import 'package:quiz_app/src/result/result_view.dart';
-
-import 'categories/category_list_view.dart';
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
+import 'package:quiz_app/src/features/categories/categories_handler.dart';
+import 'package:quiz_app/src/features/categories/category_list_view.dart';
+import 'package:quiz_app/src/features/home_screen/home_view.dart';
+import 'package:quiz_app/src/features/questions/question_view.dart';
+import 'package:quiz_app/src/features/result/result.dart';
+import 'package:quiz_app/src/features/result/result_view.dart';
+import 'package:quiz_app/src/features/settings/settings_controller.dart';
+import 'package:quiz_app/src/features/settings/settings_view.dart';
 
 class QuizApp extends StatelessWidget {
   const QuizApp({
@@ -72,6 +72,10 @@ class QuizApp extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
+                  case HomeView.routeName:
+                    return HomeView(
+                      categoriesHandler: categoriesHandler,
+                    );
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   case Questionsview.routeName:
@@ -87,6 +91,7 @@ class QuizApp extends StatelessWidget {
                   default:
                     return CategoryListView(
                       categoriesHandler: categoriesHandler,
+                      onCategoryChangeFn: null,
                     );
                 }
               },

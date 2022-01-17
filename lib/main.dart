@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/src/api/quiz_api_client.dart';
-import 'package:quiz_app/src/categories/categories_handler.dart';
-import 'package:quiz_app/src/settings/settings_controller.dart';
-import 'package:quiz_app/src/settings/settings_service.dart';
+import 'package:quiz_app/src/features/categories/categories_handler.dart';
+import 'package:quiz_app/src/features/settings/settings_controller.dart';
+import 'package:quiz_app/src/features/settings/settings_service.dart';
 
 import 'src/app.dart';
 
@@ -17,6 +17,7 @@ void main() async {
 
   final categoryHandler = CategoriesHandler(QuizApiClient());
 
+  //  initiate the http call to fetch categories
   categoryHandler.fetchCategories();
 
   // Run the app and pass in the SettingsController. The app listens to the

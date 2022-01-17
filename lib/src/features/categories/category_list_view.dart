@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/categories/categories_handler.dart';
-import 'package:quiz_app/src/questions/question_view.dart';
-import 'package:quiz_app/src/settings/settings_view.dart';
+import 'package:quiz_app/src/common/responsive_widget.dart';
+import 'package:quiz_app/src/features/categories/categories_handler.dart';
+import 'package:quiz_app/src/features/settings/settings_view.dart';
 
 class CategoryListView extends StatelessWidget {
-  const CategoryListView({Key? key, required this.categoriesHandler})
+  const CategoryListView(
+      {Key? key,
+      required this.categoriesHandler,
+      required this.onCategoryChangeFn})
       : super(key: key);
 
-  static const routeName = '/';
+  static const routeName = '/category';
 
   final CategoriesHandler categoriesHandler;
+  final void Function(String category)? onCategoryChangeFn;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text('Quiz Categories'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                // Navigate to the settings page. If the user leaves and returns
-                // to the app after it has been killed while running in the
-                // background, the navigation stack is restored.
-                Navigator.restorablePushNamed(context, SettingsView.routeName);
-              },
-            ),
-          ],
+          title: const Text('Categories'),
+          actions: ResponsiveWidget.isSmallScreen(context) == true
+              ? [
+                  IconButton(
+                    icon: const Icon(Icons.settings),
+                    onPressed: () {
+                      // Navigate to the settings page. If the user leaves and returns
+                      // to the app after it has been killed while running in the
+                      // background, the navigation stack is restored.
+                      Navigator.restorablePushNamed(
+                          context, SettingsView.routeName);
+                    },
+                  ),
+                ]
+              : null,
         ),
 
         // In contrast to the default ListView constructor, which requires
@@ -64,9 +71,7 @@ class CategoryListView extends StatelessWidget {
                             alignment: Alignment.center,
                           ),
                           onTap: () {
-                            Navigator.restorablePushNamed(
-                                context, Questionsview.routeName,
-                                arguments: {"category": categoryItem.value});
+                            onCategoryChangeFn!(categoryItem.value);
                           });
                     },
                   );

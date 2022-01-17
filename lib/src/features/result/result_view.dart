@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/categories/category_list_view.dart';
-import 'package:quiz_app/src/result/result.dart';
-import 'package:quiz_app/src/settings/settings_view.dart';
+import 'package:quiz_app/src/features/categories/category_list_view.dart';
+import 'package:quiz_app/src/features/result/result.dart';
+import 'package:quiz_app/src/features/settings/settings_view.dart';
 
 class ResultView extends StatelessWidget {
   const ResultView({

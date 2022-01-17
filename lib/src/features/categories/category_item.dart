@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:quiz_app/src/questions/question_item.dart';
+import 'package:quiz_app/src/features/questions/question_item.dart';
 
 // category model
 
