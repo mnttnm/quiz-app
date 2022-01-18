@@ -258,7 +258,7 @@ class _QuestionsviewState extends State<Questionsview> {
                                 // Providing a restorationId allows the ListView to restore the
                                 // scroll position when a user leaves and returns to the app after it
                                 // has been killed while running in the background.
-                                restorationId: 'CategoryListView',
+                                restorationId: 'QuestionListView',
                                 // itemCount: questions.length,
                                 children: questions.map((question) {
                                   return QuestionBox(
