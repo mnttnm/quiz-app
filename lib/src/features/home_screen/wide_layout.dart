@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/features/categories/categories_handler.dart';
 import 'package:quiz_app/src/features/categories/category_list_view.dart';
 import 'package:quiz_app/src/features/questions/question_view.dart';
 
 class WideLayout extends StatefulWidget {
   const WideLayout({
     Key? key,
-    required this.categoriesHandler,
   }) : super(key: key);
-
-  final CategoriesHandler categoriesHandler;
 
   @override
   State<WideLayout> createState() => _WideLayoutState();
@@ -23,6 +19,8 @@ class _WideLayoutState extends State<WideLayout> {
   }
 
   void onCategoryChange(String category) {
+    // this lead to widget re-rendering and hence the QuestionsView get re-rendered
+
     setState(() {
       currentCategory = category;
     });
@@ -35,13 +33,12 @@ class _WideLayoutState extends State<WideLayout> {
         Expanded(
           flex: 3,
           child: CategoryListView(
-            categoriesHandler: widget.categoriesHandler,
             onCategoryChangeFn: onCategoryChange,
           ),
         ),
         Expanded(
           flex: 7,
-          child: Questionsview(
+          child: QuestionsView(
             questionsCategory: currentCategory,
           ),
         ),

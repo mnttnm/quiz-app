@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quiz_app/src/api/quiz_api_client.dart';
 import 'package:quiz_app/src/features/categories/categories_handler.dart';
+import 'package:quiz_app/src/features/questions/questions_handler.dart';
 import 'package:quiz_app/src/features/settings/settings_controller.dart';
 import 'package:quiz_app/src/features/settings/settings_service.dart';
 
@@ -15,16 +17,23 @@ void main() async {
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
 
-  final categoryHandler = CategoriesHandler(QuizApiClient());
+  final _apiClient = QuizApiClient();
+  final categoryHandler = CategoriesHandler(_apiClient);
+  categoryHandler
+      .fetchCategories(); //  initiate the http call to fetch categories
 
-  //  initiate the http call to fetch categories
-  categoryHandler.fetchCategories();
+  final questionsHandler = QuestionsHandler(_apiClient);
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(QuizApp(
-    settingsController: settingsController,
-    categoriesHandler: categoryHandler,
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider.value(value: categoryHandler),
+      ChangeNotifierProvider.value(value: questionsHandler),
+    ],
+    child: QuizApp(
+      settingsController: settingsController,
+    ),
   ));
 }

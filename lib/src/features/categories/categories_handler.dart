@@ -7,7 +7,7 @@ enum CategoriesFetchStatus { initial, loading, success, failure }
 class CategoriesHandler with ChangeNotifier {
   final QuizApiClient _apiClient;
   List<Category> categories = [];
-  CategoriesFetchStatus status = CategoriesFetchStatus.loading;
+  CategoriesFetchStatus status = CategoriesFetchStatus.initial;
   CategoriesHandler(this._apiClient);
 
   Future<void> fetchCategories() async {

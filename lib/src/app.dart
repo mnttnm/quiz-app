@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:quiz_app/src/features/categories/categories_handler.dart';
 import 'package:quiz_app/src/features/categories/category_list_view.dart';
 import 'package:quiz_app/src/features/home_screen/home_view.dart';
 import 'package:quiz_app/src/features/questions/question_view.dart';
@@ -14,11 +13,9 @@ class QuizApp extends StatelessWidget {
   const QuizApp({
     Key? key,
     required this.settingsController,
-    required this.categoriesHandler,
   }) : super(key: key);
 
   final SettingsController settingsController;
-  final CategoriesHandler categoriesHandler;
   @override
   Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.
@@ -74,17 +71,14 @@ class QuizApp extends StatelessWidget {
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
                   case HomeView.routeName:
-                    return HomeView(
-                      categoriesHandler: categoriesHandler,
-                    );
+                    return const HomeView();
                   case CategoryListView.routeName:
-                    return CategoryListView(
-                      categoriesHandler: categoriesHandler,
+                    return const CategoryListView(
                       onCategoryChangeFn: null,
                     );
-                  case Questionsview.routeName:
+                  case QuestionsView.routeName:
                     final args = routeSettings.arguments as Map<String, String>;
-                    return Questionsview(
+                    return QuestionsView(
                       questionsCategory: args['category']!,
                     );
                   case ResultView.routeName:
@@ -94,9 +88,7 @@ class QuizApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   default:
-                    return HomeView(
-                      categoriesHandler: categoriesHandler,
-                    );
+                    return const HomeView();
                 }
               },
             );
