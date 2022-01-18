@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/features/categories/category_list_view.dart';
+import 'package:quiz_app/src/features/home_screen/home_view.dart';
 import 'package:quiz_app/src/features/result/result.dart';
 import 'package:quiz_app/src/features/settings/settings_view.dart';
 
@@ -21,7 +21,7 @@ class ResultView extends StatelessWidget {
             // Navigate to the settings page. If the user leaves and returns
             // to the app after it has been killed while running in the
             // background, the navigation stack is restored.
-            Navigator.restorablePushNamed(context, CategoryListView.routeName);
+            Navigator.pushReplacementNamed(context, HomeView.routeName);
           },
         ),
         title: const Text(

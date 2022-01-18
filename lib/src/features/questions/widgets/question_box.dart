@@ -22,7 +22,7 @@ class _QuestionBoxState extends State<QuestionBox>
   int? correctAnswerIndex;
   bool isCorrect = false;
 
-  List<Widget> generateChoiceWidgets(Question question) {
+  List<Widget> generateChoiceWidgets(Question question, BuildContext context) {
     correctAnswerIndex ??= correctAnswerIndex = Random().nextInt(3);
     final widgetList = <ListTile>[];
     for (var i in [for (var i = 0; i < 3; i += 1) i]) {
@@ -49,7 +49,9 @@ class _QuestionBoxState extends State<QuestionBox>
           i == correctAnswerIndex
               ? question.correctAnswer
               : question.incorrectAnswers[i],
-          style: const TextStyle(fontSize: 14),
+          style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).textTheme.bodyText1!.color),
         ),
       ));
     }
@@ -75,7 +77,7 @@ class _QuestionBoxState extends State<QuestionBox>
           const SizedBox(
             height: 8,
           ),
-          ...generateChoiceWidgets(widget.question)
+          ...generateChoiceWidgets(widget.question, context)
         ],
       ),
     );

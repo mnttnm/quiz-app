@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/common/responsive_widget.dart';
 import 'package:quiz_app/src/features/categories/categories_handler.dart';
-import 'package:quiz_app/src/features/settings/settings_view.dart';
 
 class CategoryListView extends StatelessWidget {
   const CategoryListView(
@@ -17,28 +15,6 @@ class CategoryListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('Categories'),
-          actions: ResponsiveWidget.isSmallScreen(context) == true
-              ? [
-                  IconButton(
-                    icon: const Icon(Icons.settings),
-                    onPressed: () {
-                      // Navigate to the settings page. If the user leaves and returns
-                      // to the app after it has been killed while running in the
-                      // background, the navigation stack is restored.
-                      Navigator.restorablePushNamed(
-                          context, SettingsView.routeName);
-                    },
-                  ),
-                ]
-              : null,
-        ),
-
-        // In contrast to the default ListView constructor, which requires
-        // building all Widgets up front, the ListView.builder constructor lazily
-        // builds Widgets as they’re scrolled into view.
         body: AnimatedBuilder(
             animation: categoriesHandler,
             builder: (context, child) {
@@ -57,23 +33,45 @@ class CategoryListView extends StatelessWidget {
                     ),
                   );
                 case CategoriesFetchStatus.success:
-                  return ListView.builder(
-                    // Providing a restorationId allows the ListView to restore the
-                    // scroll position when a user leaves and returns to the app after it
-                    // has been killed while running in the background.
-                    restorationId: 'CategoryListView',
-                    itemCount: categoriesHandler.categories.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final categoryItem = categoriesHandler.categories[index];
-                      return ListTile(
-                          title: Align(
-                            child: Text(categoryItem.label),
-                            alignment: Alignment.center,
+                  return Column(
+                    children: [
+                      const Align(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Categories",
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
                           ),
-                          onTap: () {
-                            onCategoryChangeFn!(categoryItem.value);
-                          });
-                    },
+                        ),
+                        alignment: Alignment.topLeft,
+                      ),
+                      const Divider(
+                        thickness: 2,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          // Providing a restorationId allows the ListView to restore the
+                          // scroll position when a user leaves and returns to the app after it
+                          // has been killed while running in the background.
+                          restorationId: 'CategoryListView',
+                          itemCount: categoriesHandler.categories.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final categoryItem =
+                                categoriesHandler.categories[index];
+                            return ListTile(
+                                title: Align(
+                                  child: Text(categoryItem.label),
+                                  alignment: Alignment.center,
+                                ),
+                                onTap: () {
+                                  onCategoryChangeFn!(categoryItem.value);
+                                });
+                          },
+                        ),
+                      ),
+                    ],
                   );
 
                 case CategoriesFetchStatus.failure:

@@ -33,14 +33,14 @@ class _WideLayoutState extends State<WideLayout> {
     return Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 3,
           child: CategoryListView(
             categoriesHandler: widget.categoriesHandler,
             onCategoryChangeFn: onCategoryChange,
           ),
         ),
         Expanded(
-          flex: 3,
+          flex: 7,
           child: Questionsview(
             questionsCategory: currentCategory,
           ),

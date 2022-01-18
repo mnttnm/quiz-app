@@ -60,6 +60,7 @@ class QuizApp extends StatelessWidget {
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
           theme: ThemeData(),
+          // Todo: Change the dark theme configuration. Currently, Questions page does not look good
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
@@ -76,8 +77,11 @@ class QuizApp extends StatelessWidget {
                     return HomeView(
                       categoriesHandler: categoriesHandler,
                     );
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
+                  case CategoryListView.routeName:
+                    return CategoryListView(
+                      categoriesHandler: categoriesHandler,
+                      onCategoryChangeFn: null,
+                    );
                   case Questionsview.routeName:
                     final args = routeSettings.arguments as Map<String, String>;
                     return Questionsview(
@@ -87,11 +91,11 @@ class QuizApp extends StatelessWidget {
                     return ResultView(
                       resultObj: routeSettings.arguments as Result,
                     );
-                  case CategoryListView.routeName:
+                  case SettingsView.routeName:
+                    return SettingsView(controller: settingsController);
                   default:
-                    return CategoryListView(
+                    return HomeView(
                       categoriesHandler: categoriesHandler,
-                      onCategoryChangeFn: null,
                     );
                 }
               },
