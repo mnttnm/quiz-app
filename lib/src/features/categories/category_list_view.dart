@@ -62,16 +62,31 @@ class CategoryListView extends StatelessWidget {
                     itemCount: categoriesHandler.categories.length,
                     itemBuilder: (BuildContext context, int index) {
                       final categoryItem = categoriesHandler.categories[index];
+                      final isSelected =
+                          questionHandler.currentCategory != null &&
+                              questionHandler.currentCategory!.value ==
+                                  categoryItem.value;
                       return ListTile(
-                          title: Align(
-                            child: Text(categoryItem.label),
-                            alignment: Alignment.center,
+                        title: Align(
+                          child: Text(
+                            categoryItem.label,
+                            style: TextStyle(
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                fontSize: isSelected ? 18 : 16),
                           ),
-                          onTap: () {
-                            questionHandler.currentCategory = categoryItem;
-                            questionHandler.fetchQuestions();
-                            onCategoryChangeFn!(categoryItem.value);
-                          });
+                          alignment: Alignment.center,
+                        ),
+                        onTap: () {
+                          questionHandler.currentCategory = categoryItem;
+                          questionHandler.fetchQuestions();
+                          onCategoryChangeFn!(categoryItem.value);
+                        },
+                        autofocus: true,
+                        selected: isSelected,
+                        selectedColor: Theme.of(context).colorScheme.secondary,
+                      );
                     },
                   ),
                 ),
