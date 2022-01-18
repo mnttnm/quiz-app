@@ -23,9 +23,10 @@ class _QuestionBoxState extends State<QuestionBox>
   bool isCorrect = false;
 
   List<Widget> generateChoiceWidgets(Question question, BuildContext context) {
-    correctAnswerIndex ??= correctAnswerIndex = Random().nextInt(3);
+    final choiceCount = min(question.incorrectAnswers.length, 2) + 1;
+    correctAnswerIndex ??= correctAnswerIndex = Random().nextInt(choiceCount);
     final widgetList = <ListTile>[];
-    for (var i in [for (var i = 0; i < 3; i += 1) i]) {
+    for (var i in [for (var i = 0; i < choiceCount; i += 1) i]) {
       widgetList.add(ListTile(
         contentPadding: EdgeInsets.zero,
         leading: Radio(
