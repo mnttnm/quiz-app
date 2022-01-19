@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quiz_app/src/api/models/question.dart';
 import 'package:quiz_app/src/features/common/responsive_widget.dart';
 import 'package:quiz_app/src/features/questions/questions_handler.dart';
 import 'package:quiz_app/src/features/questions/widgets/question_box.dart';
 import 'package:quiz_app/src/features/result/result.dart';
 import 'package:quiz_app/src/features/result/result_view.dart';
+import 'package:quiz_app/src/models/models.dart';
 
 // enum QuestionsFetchStatus { initial, loading, success, failure }
 

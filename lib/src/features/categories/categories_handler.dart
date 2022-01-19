@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/api/models/models.dart';
 import 'package:quiz_app/src/api/quiz_api_client.dart';
+import 'package:quiz_app/src/models/models.dart';
 
 enum CategoriesFetchStatus { initial, loading, success, failure }
 

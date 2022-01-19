@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-
-import 'models/models.dart';
+import 'package:quiz_app/src/models/models.dart';
 
 /// Exception thrown when getCategories fails.
 class CategoryRequestFailure implements Exception {}

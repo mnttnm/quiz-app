@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/api/models/models.dart';
 import 'package:quiz_app/src/features/questions/question_view.dart';
+import 'package:quiz_app/src/models/models.dart';
 
 class QuestionBox extends StatefulWidget {
   const QuestionBox(
