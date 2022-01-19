@@ -27,13 +27,34 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider.value(value: categoryHandler),
-      ChangeNotifierProvider.value(value: questionsHandler),
-    ],
-    child: QuizApp(
-      settingsController: settingsController,
-    ),
-  ));
+  runApp(QuizAppBase(
+      categoryHandler: categoryHandler,
+      questionsHandler: questionsHandler,
+      settingsController: settingsController));
+}
+
+class QuizAppBase extends StatelessWidget {
+  const QuizAppBase({
+    Key? key,
+    required this.categoryHandler,
+    required this.questionsHandler,
+    required this.settingsController,
+  }) : super(key: key);
+
+  final CategoriesHandler categoryHandler;
+  final QuestionsHandler questionsHandler;
+  final SettingsController settingsController;
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: categoryHandler),
+        ChangeNotifierProvider.value(value: questionsHandler),
+      ],
+      child: QuizApp(
+        settingsController: settingsController,
+      ),
+    );
+  }
 }
