@@ -3,8 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quiz_app/src/features/common/responsive_widget.dart';
 import 'package:quiz_app/src/features/questions/questions_handler.dart';
 import 'package:quiz_app/src/features/questions/widgets/question_box.dart';
-import 'package:quiz_app/src/features/result/result.dart';
-import 'package:quiz_app/src/features/result/result_view.dart';
+import 'package:quiz_app/src/features/questions/widgets/submit_quiz_button.dart';
 import 'package:quiz_app/src/models/models.dart';
 
 // enum QuestionsFetchStatus { initial, loading, success, failure }
@@ -59,56 +58,12 @@ class _QuestionsViewState extends State<QuestionsView> {
         appBar: ResponsiveWidget.isSmallScreen(context) == true
             ? AppBar(
                 actions: [
-                  TextButton(
-                    onPressed: () {
-                      if (unAnsweredCount > 0) {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Dialog Title"),
-                              content: const Text(
-                                  "You have some unanswered questions, Do you really want to submit?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    Navigator.pushNamed(
-                                        context, ResultView.routeName,
-                                        arguments: Result(
-                                          unAnsweredCount: unAnsweredCount,
-                                          correctAnswerCount:
-                                              correctAnswerCount,
-                                          inCorrectAnswerCount:
-                                              inCorrectAnswerCount,
-                                        ));
-                                  },
-                                  child: const Text("Yes"),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text("No"),
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      } else {
-                        Navigator.pushNamed(context, ResultView.routeName,
-                            arguments: Result(
-                              unAnsweredCount: unAnsweredCount,
-                              correctAnswerCount: correctAnswerCount,
-                              inCorrectAnswerCount: inCorrectAnswerCount,
-                            ));
-                      }
-                    },
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SubmitQuizButton(
+                        unAnsweredCount: unAnsweredCount,
+                        correctAnswerCount: correctAnswerCount,
+                        inCorrectAnswerCount: inCorrectAnswerCount),
                   )
                 ],
               )
@@ -124,79 +79,17 @@ class _QuestionsViewState extends State<QuestionsView> {
               : ThemeData.light(),
           child: Consumer<QuestionsHandler>(
             builder: (context, questionsHandler, child) {
+              var theme = Theme.of(context);
               unAnsweredCount = questionsHandler.questions.length;
               return Container(
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Questions',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .copyWith(
-                                    color: Colors.black,
-                                    fontSize: 24,
-                                  )),
-                        ),
-                        if (ResponsiveWidget.isSmallScreen(context) != true)
-                          TextButton(
-                            onPressed: () {
-                              if (unAnsweredCount > 0) {
-                                showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text("Dialog Title"),
-                                      content: const Text(
-                                          "You have some unanswered questions, Do you really want to submit?"),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            Navigator.pushNamed(
-                                                context, ResultView.routeName,
-                                                arguments: Result(
-                                                  unAnsweredCount:
-                                                      unAnsweredCount,
-                                                  correctAnswerCount:
-                                                      correctAnswerCount,
-                                                  inCorrectAnswerCount:
-                                                      inCorrectAnswerCount,
-                                                ));
-                                          },
-                                          child: const Text("Yes"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text("No"),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                              } else {
-                                Navigator.pushNamed(
-                                    context, ResultView.routeName,
-                                    arguments: Result(
-                                      unAnsweredCount: unAnsweredCount,
-                                      correctAnswerCount: correctAnswerCount,
-                                      inCorrectAnswerCount:
-                                          inCorrectAnswerCount,
-                                    ));
-                              }
-                            },
-                            child: const Text(
-                              "Submit",
-                            ),
-                          )
-                      ],
+                    QuestionViewHeader(
+                      theme: theme,
+                      unAnsweredCount: unAnsweredCount,
+                      correctAnswerCount: correctAnswerCount,
+                      inCorrectAnswerCount: inCorrectAnswerCount,
+                      questionsCategory: widget.questionsCategory,
                     ),
                     const Divider(
                       thickness: 2,
@@ -259,5 +152,47 @@ class _QuestionsViewState extends State<QuestionsView> {
             },
           ),
         ));
+  }
+}
+
+class QuestionViewHeader extends StatelessWidget {
+  const QuestionViewHeader({
+    Key? key,
+    required this.theme,
+    required this.unAnsweredCount,
+    required this.correctAnswerCount,
+    required this.inCorrectAnswerCount,
+    required this.questionsCategory,
+  }) : super(key: key);
+
+  final ThemeData theme;
+  final int unAnsweredCount;
+  final int correctAnswerCount;
+  final int inCorrectAnswerCount;
+  final String questionsCategory;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('${questionsCategory.toUpperCase()} Questions',
+              style: theme.textTheme.bodyText1!.copyWith(
+                color: theme.colorScheme.primary,
+                fontSize: 24,
+              )),
+        ),
+        if (ResponsiveWidget.isSmallScreen(context) != true)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SubmitQuizButton(
+                unAnsweredCount: unAnsweredCount,
+                correctAnswerCount: correctAnswerCount,
+                inCorrectAnswerCount: inCorrectAnswerCount),
+          )
+      ],
+    );
   }
 }

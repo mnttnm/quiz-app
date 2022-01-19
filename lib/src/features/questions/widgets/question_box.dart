@@ -61,6 +61,7 @@ class _QuestionBoxState extends State<QuestionBox>
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     super.build(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -70,10 +71,8 @@ class _QuestionBoxState extends State<QuestionBox>
         children: [
           Text(
             widget.question.question,
-            style: Theme.of(context)
-                .textTheme
-                .headline6!
-                .copyWith(color: Colors.blue.shade900, fontSize: 18),
+            style: theme.textTheme.headline6!
+                .copyWith(color: theme.colorScheme.secondary, fontSize: 18),
           ),
           const SizedBox(
             height: 8,
