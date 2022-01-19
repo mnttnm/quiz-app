@@ -77,10 +77,14 @@ class QuizApp extends StatelessWidget {
                       onCategoryChangeFn: null,
                     );
                   case QuestionsView.routeName:
-                    final args = routeSettings.arguments as Map<String, String>;
-                    return QuestionsView(
-                      questionsCategory: args['category']!,
-                    );
+                    if (routeSettings.arguments != null) {
+                      final args =
+                          routeSettings.arguments as Map<String, String>;
+                      return QuestionsView(
+                        questionsCategory: args['category']!,
+                      );
+                    }
+                    return const HomeView();
                   case ResultView.routeName:
                     return ResultView(
                       resultObj: routeSettings.arguments as Result,
